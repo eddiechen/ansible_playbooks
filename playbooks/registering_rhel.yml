@@ -1,0 +1,14 @@
+---
+- hosts: all
+  remote_user: root
+
+  tasks:
+  - name: installing Sat6 certificate
+    command: /usr/bin/rpm -Uvh http://sat6.chen.com/pub/katello-ca-consumer-latest.noarch.rpm
+    ignore_errors: True
+
+  - name: registering system w/ subscription manager
+    redhat_subscription:
+      state: present
+      org_id: chen
+      activationkey: rhel7_prod
