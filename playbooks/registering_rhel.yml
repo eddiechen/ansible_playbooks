@@ -3,6 +3,9 @@
   remote_user: root
 
   tasks:
+  - name: set sat6.chen.com ip in /etc/hosts
+    command: /usr/bin/echo "192.168.2.24	sat6.chen.com sat6" >> /etc/hosts
+
   - name: installing Sat6 certificate
     command: /usr/bin/rpm -Uvh http://sat6.chen.com/pub/katello-ca-consumer-latest.noarch.rpm
     ignore_errors: True
@@ -11,4 +14,38 @@
     redhat_subscription:
       state: present
       org_id: chen
-      activationkey: rhel7_prod
+      activationkey: rhel7_dev
+
+  - name: enable Red Hat repos
+    command: /usr/sbin/subscription-manager repos --enable=rhel-7-server-rh-common-rpms --enable=chen_epel_epel7
+    ignore_errors: True
+
+  - name: yum install packages
+    yum:
+      name: {{ item }}
+      state: latest
+      with_items:
+        - katello-agent
+        - sysstat
+        - puppet
+
+  - name: enable katello-agent
+    service:
+      name: goferd
+      state: started
+      enabled: yes
+
+  - name: set puppet config file
+    command: /usr/bin/echo "server=sat6.chen.com" >> /etc/puppet/puppet.conf
+
+  - name: run puppet config manually
+    command: /usr/bin/puppet agent -t --onetime
+
+  - name: enable puppet service
+    service:
+      name: puppet
+      state: started
+      enabled: yes
+
+  - name: copy over satellite ssh key
+    command: /usr/bin/echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqkHzf0E4EtFEp8+PTNcN6jxEYfXlr6TAzwSU/rduQIQpOgpSmo1TooiaXnANUlYJMxZCXATKOF8LisEWp6L5ObimEY7aCVL0OV2MDwqvySV9V21ApG3VrCen7KHQSaXW2mdjVnfW7YG9Rxo+llzqJVMGvCJwiDgQiUUklL9/kDKjinkOgpLKs0o2g2h5SbxH4Qd9lnbwv4NMwuzdgyKbZv9/ND8pya934POllMnyz1l10+Fe/Vyp8r6SZIIAkVYuf40D477JyqXaSvSywVmBOhrsyni7q9F/3dUq5O8CdwjkF2n0aDTjLFp8MZJtfSBbM3V7AQVNo7cWqbeH9B1aP foreman-proxy@sat6.chen.com" >> /root/.ssh/authorized_keys
