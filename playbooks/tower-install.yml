@@ -21,7 +21,7 @@
       dest: /tmp/ansible-tower-setup-bundle-latest.el7.tar.gz
 
   - name: unzip ansible tower bundle
-    command: mkdir -p /tmp/ansible-tower-setup-bundle-latest && tar -zxvf /tmp/ansible-tower-setup-bundle-latest.el7.tar.gz -C /tmp/ansible-tower-setup-bundle-latest/ --strip-components=1
+    command: /usr/bin/mkdir /tmp/ansible-tower-setup-bundle-latest && tar -zxvf /tmp/ansible-tower-setup-bundle-latest.el7.tar.gz -C /tmp/ansible-tower-setup-bundle-latest/ --strip-components=1
 
   - name: modify inventory file
     template:
