@@ -9,7 +9,7 @@
 
   - name: install necessary RPM packages
     yum:
-      name: {{ item }}
+      name: "{{ item }}"
       state: latest
       with_items:
         - unzip
