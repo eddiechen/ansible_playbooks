@@ -4,7 +4,7 @@
 
   tasks:
   - name: enable Red Hat repos
-    command: /usr/sbin/subscription-manager repos --enable=rhel-7-server-optional-rpms --enable=rhel-7-server-rh-common-rpms --enable=chen_epel_epel7
+    command: /usr/sbin/subscription-manager repos --enable=rhel-7-server-optional-rpms --enable=rhel-7-server-rh-common-rpms
     ignore_errors: True
 
   - name: install necessary RPM packages
