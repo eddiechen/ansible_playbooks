@@ -11,9 +11,9 @@
     yum:
       state: latest
       name: "{{ item }}"
-      with_items:
-        - unzip
-        - wget
+    with_items:
+      - unzip
+      - wget
 
   - name: download the latest ansible tower
     get_url:
