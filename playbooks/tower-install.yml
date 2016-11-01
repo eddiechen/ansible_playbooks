@@ -1,0 +1,34 @@
+---
+- hosts: all
+  remote_user: root
+
+  tasks:
+  - name: enable Red Hat repos
+    command: /usr/sbin/subscription-manager repos --enable=rhel-7-server-optional-rpms --enable=rhel-7-server-rh-common-rpms --enable=chen_epel_epel7
+    ignore_errors: True
+
+  - name: install necessary RPM packages
+    yum:
+      name: {{ item }}
+      state: latest
+      with_items:
+        - unzip
+        - wget
+
+  - name: download the latest ansible tower
+    get_url:
+      url: https://releases.ansible.com/ansible-tower/setup-bundle/ansible-tower-setup-bundle-latest.el7.tar.gz
+      dest: /tmp/ansible-tower-setup-bundle-latest.el7.tar.gz
+
+  - name: unzip ansible tower bundle
+    unarchive:
+      src: /tmp/ansible-tower-setup-bundle-latest.el7.tar.gz
+      dest: /tmp/ansible-tower-setup-bundle-latest
+
+  - name: modify inventory file
+    template:
+      src: /tmp/inventory
+      dest: /tmp/ansible-tower-setup-bundle-latest/inventory
+
+  - name: run tower installation
+    command: cd /tmp/ansible-tower-setup-bundle-latest && ./setup.sh
