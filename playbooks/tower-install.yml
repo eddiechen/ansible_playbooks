@@ -4,13 +4,13 @@
 
   tasks:
   - name: enable Red Hat repos
-    command: /usr/sbin/subscription-manager repos --enable=rhel-7-server-optional-rpms --enable=rhel-7-server-rh-common-rpms
+    command: /usr/sbin/subscription-manager repos --enable=rhel-7-server-optional-rpms --enable=rhel-7-server-rh-common-rpms --enable=rhel-7-server-extras-rpms
     ignore_errors: True
 
   - name: install necessary RPM packages
     yum:
-      name: "{{ item }}"
       state: latest
+      name: "{{ item }}"
       with_items:
         - unzip
         - wget
