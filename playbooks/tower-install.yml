@@ -1,4 +1,17 @@
 ---
+################################################################################
+# 1. RHEL 7 VM with 20GB /var
+# 2. Register RHEL 7 VM and make sure optional, common, and extra channels are available
+# 3. wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && rpm -i epel-release-latest-7.noarch.rpm
+# 4. yum install ansible git -y
+# 5. cd /opt
+# 6. git clone https://github.com/eddiechen/ansible_playbooks.git
+# 7. cd /opt/ansible_playbooks/playbooks/
+# 8. ssh-keygen <enter> <enter> <enter>
+# 9. ssh-copy-id root@localhost
+# 10. ansible-playbook -i "localhost," tower-install.yml
+################################################################################
+
 - hosts: all
   remote_user: root
 
@@ -17,7 +30,7 @@
 
   - name: yum update all
     yum:
-      name: *
+      name: "*"
       state: latest
 
   - name: download the latest ansible tower
