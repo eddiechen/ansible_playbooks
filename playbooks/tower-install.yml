@@ -23,11 +23,11 @@
   - name: unzip ansible tower bundle
     unarchive:
       src: /tmp/ansible-tower-setup-bundle-latest.el7.tar.gz
-      dest: /tmp/ansible-tower-setup-bundle-latest
+      dest: /tmp/
 
   - name: modify inventory file
     template:
-      src: /tmp/inventory
+      src: /opt/ansible_playbooks/inventory
       dest: /tmp/ansible-tower-setup-bundle-latest/inventory
 
   - name: run tower installation
