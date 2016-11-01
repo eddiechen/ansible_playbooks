@@ -20,8 +20,14 @@
       url: https://releases.ansible.com/ansible-tower/setup-bundle/ansible-tower-setup-bundle-latest.el7.tar.gz
       dest: /tmp/ansible-tower-setup-bundle-latest.el7.tar.gz
 
+  - name: create directory /tmp/ansible-tower-setup-bundle-latest
+    file:
+      path: /tmp/ansible-tower-setup-bundle-latest
+      state: directory
+      mode: 0755
+
   - name: unzip ansible tower bundle
-    command: /usr/bin/mkdir /tmp/ansible-tower-setup-bundle-latest && tar -zxvf /tmp/ansible-tower-setup-bundle-latest.el7.tar.gz -C /tmp/ansible-tower-setup-bundle-latest/ --strip-components=1
+    command: tar -zxvf /tmp/ansible-tower-setup-bundle-latest.el7.tar.gz -C /tmp/ansible-tower-setup-bundle-latest/ --strip-components=1
 
   - name: modify inventory file
     template:
