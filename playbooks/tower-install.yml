@@ -35,4 +35,4 @@
       dest: /tmp/ansible-tower-setup-bundle-latest/inventory
 
   - name: run tower installation
-    script: /tmp/ansible-tower-setup-bundle-latest/setup.sh -i /tmp/ansible-tower-setup-bundle-latest/inventory
+    command: sh /tmp/ansible-tower-setup-bundle-latest/setup.sh -i /tmp/ansible-tower-setup-bundle-latest/inventory
