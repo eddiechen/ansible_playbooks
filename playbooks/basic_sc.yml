@@ -1,7 +1,6 @@
 ---
 - hosts: all
-  remote_user: echen
-  become: yes
+  
   tasks:
   - name: installing ntp
     yum: 
