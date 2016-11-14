@@ -13,5 +13,5 @@
   - name: if ntp is not running
     handlers:
       service: 
-        name=ntpd 
+        name: ntpd 
         state: restarted
