@@ -44,6 +44,7 @@
 
   - name: run puppet config manually
     command: /usr/bin/puppet agent -t --onetime
+    ignore_errors: True
 
   - name: enable puppet service
     service:
