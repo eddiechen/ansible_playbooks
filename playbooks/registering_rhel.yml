@@ -22,7 +22,7 @@
 
   - name: yum install packages
     yum:
-      name: {{ item }}
+      name: "{{ item }}"
       state: latest
       with_items:
         - katello-agent
