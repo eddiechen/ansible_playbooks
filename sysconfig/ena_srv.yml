@@ -1,0 +1,19 @@
+---
+- hosts: all
+  vars:
+    packages: "*"
+  
+  tasks:
+  - name: installing the package
+    yum: 
+      name: "{{ packages }}"
+      state: latest
+  - name: ensure the service is running
+    service:
+      name: "{{ packages }}"
+      state: started
+  handlers:
+    - name: if the service  is not running
+      service: 
+        name: "{{ packages }}"
+        state: restarted
