@@ -1,0 +1,10 @@
+---
+- hosts: all
+  vars:
+    packages: "*"
+  
+  tasks:
+  - name: removing the package
+    yum: 
+      name: "{{ packages }}"
+      state: absent
