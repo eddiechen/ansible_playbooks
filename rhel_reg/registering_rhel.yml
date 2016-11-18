@@ -57,6 +57,11 @@
       dest: /root/.ssh/authorized_keys
       line: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqkHzf0E4EtFEp8+PTNcN6jxEYfXlr6TAzwSU/rduQIQpOgpSmo1TooiaXnANUlYJMxZCXATKOF8LisEWp6L5ObimEY7aCVL0OV2MDwqvySV9V21ApG3VrCen7KHQSaXW2mdjVnfW7YG9Rxo+llzqJVMGvCJwiDgQiUUklL9/kDKjinkOgpLKs0o2g2h5SbxH4Qd9lnbwv4NMwuzdgyKbZv9/ND8pya934POllMnyz1l10+Fe/Vyp8r6SZIIAkVYuf40D477JyqXaSvSywVmBOhrsyni7q9F/3dUq5O8CdwjkF2n0aDTjLFp8MZJtfSBbM3V7AQVNo7cWqbeH9B1aP foreman-proxy@sat6.chen.com"
 
+  - name: modify motd
+    lineinfile:
+      dest: /etc/motd
+      line: "you've been ansibled!"
+
   - name: yum update all
     yum:
       name: "*"
