@@ -4,10 +4,6 @@
     packages: "*"
   
   tasks:
-  - name: installing the package
-    yum: 
-      name: "{{ packages }}"
-      state: latest
   - name: ensure the service is running
     service:
       name: "{{ packages }}"
