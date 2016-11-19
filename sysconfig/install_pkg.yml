@@ -2,9 +2,9 @@
 - hosts: all
   vars:
     packages: "*"
-  
+
   tasks:
   - name: installing the package
-    yum: 
+    yum:
       name: "{{ packages }}"
       state: latest
