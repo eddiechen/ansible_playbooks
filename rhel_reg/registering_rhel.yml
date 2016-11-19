@@ -60,7 +60,7 @@
   - name: modify motd
     lineinfile:
       dest: /etc/motd
-      line: "you have been ansibled!!"
+      line: "you have been ansibled by Eddie!"
 
   - name: yum update all
     yum:
