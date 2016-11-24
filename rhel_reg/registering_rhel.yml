@@ -19,7 +19,7 @@
       activationkey: rhel7_prod
 
   - name: enable Red Hat repos
-    command: /usr/sbin/subscription-manager repos --enable=rhel-7-server-rh-common-rpms
+    command: /usr/sbin/subscription-manager repos --enable=rhel-7-server-rh-common-rpms --enable=rhel-7-server-extras-rpms --enable=rhel-7-server-optional-rpms
     ignore_errors: True
 
   - name: yum install packages
@@ -30,6 +30,7 @@
       - katello-agent
       - sysstat
       - puppet
+      - cockpit
 
   - name: enable katello-agent
     service:
@@ -49,6 +50,18 @@
   - name: enable puppet service
     service:
       name: puppet
+      state: started
+      enabled: yes
+
+  - name: disable firewall service
+    service:
+      name: firewalld
+      state: stopped
+      enabled: no
+
+  - name: enable cockpit service
+    service:
+      name: cockpit
       state: started
       enabled: yes
 
