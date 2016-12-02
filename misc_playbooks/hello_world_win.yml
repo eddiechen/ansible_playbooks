@@ -1,8 +1,9 @@
+---
 - hosts: all
   ansible_port: 5986
   ansible_connection: winrm
   ansible_winrm_server_cert_validation: ignore
 
   tasks:
-  - name: ping the windows client
+  - name: echo hello world
     win_shell: write-host "hello world"
