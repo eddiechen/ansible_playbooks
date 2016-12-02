@@ -5,4 +5,4 @@
 
   tasks:
   - name: ping the windows client
-    win_shell: write-host "hellow world"
+    win_shell: write-host "hello world"
