@@ -6,4 +6,4 @@
 
   tasks:
   - name: echo hello world
-    win_shell: write-host "hello world"
+    win_shell: write-host "hello world" >> C:\tmp.txt
