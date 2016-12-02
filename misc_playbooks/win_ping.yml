@@ -1,0 +1,6 @@
+---
+- hosts: all
+
+  tasks:
+  - name: ping the windows client
+    action: win_ping
