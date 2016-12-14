@@ -1,0 +1,54 @@
+---
+
+- name: Workshop Basic Playbook
+  hosts: all
+  become: true
+
+  vars:
+    packages:
+      - vim
+      - https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm
+    telegraf_version: 0.2.4
+    telegraf_flush_retries: 2
+    influxdb_db_name: telegraf
+    influxdb_url: http://localhost:8086
+
+  tasks:
+  - name: install packages
+    yum:
+      name: "{{ item }}"
+      state: latest
+    with_items: "{{ packages }}"
+    ignore_errors: True
+
+  - name: copy influxdb.repos
+    template:
+      src: /home/echen/lightbulb/workshops/basic_playbook/solution/influxdb.repo.j2
+      dest: /etc/yum.repos.d/influxdb.repo
+
+  - name: install telegraf
+    yum:
+      name: "telegraf-{{ telegraf_version }}"
+      state: present
+
+  - name: copy telegraf.conf
+    template:
+      src: /home/echen/lightbulb/workshops/basic_playbook/solution/telegraf.conf.j2
+      dest: /etc/opt/telegraf/telegraf.conf
+
+  - name: ensure telegraf is running
+    service:
+      name: telegraf
+      state: started
+#  handlers:
+#    - name: if telegraf is not running
+#      service:
+#        name: telegraf
+#        state: restarted
+
+  - name: verify status
+    command: /opt/telegraf/telegraf -test -config /etc/opt/telegraf/telegraf.conf
+    register: telegraf
+
+  - debug:
+      var: telegraf.stdout_lines
