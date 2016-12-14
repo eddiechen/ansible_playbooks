@@ -40,11 +40,6 @@
     service:
       name: telegraf
       state: started
-#  handlers:
-#    - name: if telegraf is not running
-#      service:
-#        name: telegraf
-#        state: restarted
 
   - name: verify status
     command: /opt/telegraf/telegraf -test -config /etc/opt/telegraf/telegraf.conf
@@ -52,3 +47,9 @@
 
   - debug:
       var: telegraf.stdout_lines
+
+handlers:
+  - name: if telegraf is not running
+    service:
+      name: telegraf
+      state: restarted
