@@ -1,0 +1,12 @@
+---
+- hosts: test_servers
+  remote_user: root
+
+- name: Include extra variables
+  include_vars: vault_vars.yml
+
+- name: Fix up /etc/hosts
+  lineinfile:
+    dest: /etc/hosts
+    insertafter: '^127\.0\.0\.1.*'
+    line: "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}      {{inventory_hostname}}.chen.com {{inventory_hostname}}"
