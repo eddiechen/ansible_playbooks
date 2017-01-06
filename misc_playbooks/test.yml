@@ -1,12 +1,7 @@
 ---
-- hosts: test_servers
-  remote_user: root
+- name: loading variables
+  include_vars: "vault_vars.yml"
 
-- name: Include extra variables
-  include_vars: vault_vars.yml
-
-- name: Fix up /etc/hosts
-  lineinfile:
-    dest: /etc/hosts
-    insertafter: '^127\.0\.0\.1.*'
-    line: "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}      {{inventory_hostname}}.chen.com {{inventory_hostname}}"
+- name: Re-register server with AD through VAS
+  command: /opt/quest/bin/vastool -u "{{ vas_username }}" -w "{{ vas_password }}' join -f -n {{inventory_hostname}} GENWORTH.NET | tee /var/tmp/VASinstall/join-{{inventory_hostname}}.log
+  ignore_errors: false
