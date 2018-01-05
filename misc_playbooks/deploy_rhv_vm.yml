@@ -14,17 +14,6 @@
     datacenter: Default
     cluster: Default
 
-    standard_vm:
-      cluster: Default
-      template: rhel74-base
-      memory: 1GiB
-      cores: 2
-      disks:
-        - size: 50GiB
-          name: data
-          storage_domain: rhev_vms2
-          interface: virtio
-
   pre_tasks:
     - name: Login to rhv
       ovirt_auth:
@@ -40,15 +29,15 @@
   - name: deploying a RHV VM
     ovirt_vms:
       auth: "{{ ovirt_auth }}"
-      name: test_vm
-      template: rhel74-base
+      name: "{{ vm_name }}"
+      template: rhel7u4_base
       cluster: "{{ cluster }}"
       cloud_init:
         user_name: root
         root_password: 'eddiechen'
         custom_script: |
           runcmd:
-          - /usr/bin/hostnamectl set-hostname test_vm.chen.com
+          - /usr/bin/hostnamectl set-hostname {{ vm_name }}.chen.com
 
   post_tasks:
     - name: Logout from rhv
