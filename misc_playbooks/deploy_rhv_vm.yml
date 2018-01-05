@@ -36,16 +36,17 @@
       tags:
         - always
 
-  #tasks:
-  #- name: deploying RHV VMs
-  #  ovirt:
-  #    instance_name: test_vm
-  #    instance_type: server
-  #    region: Default
-  #    instance_nic: nic1
-  #    instance_network: ovirtmgmt/ovirtmgmt
-  #    disk_alloc: thin
-  #    instance_os: Linux
+  tasks:
+  - name: deploying a RHV VM
+    ovirt_vms:
+      auth: "{{ ovirt_auth }}"
+      name: test_vm
+      template: rhel74-base
+      cluster: "{{ cluster }}"
+      cloud_init:
+        host_name: test_vm
+        user_name: root
+        root_password: 'eddiechen'
 
   post_tasks:
     - name: Logout from rhv
