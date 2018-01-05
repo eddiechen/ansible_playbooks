@@ -44,9 +44,11 @@
       template: rhel74-base
       cluster: "{{ cluster }}"
       cloud_init:
-        host_name: test_vm
         user_name: root
         root_password: 'eddiechen'
+        custom_script: |
+          runcmd:
+          - /usr/bin/hostnamectl set-hostname test_vm.chen.com
 
   post_tasks:
     - name: Logout from rhv
