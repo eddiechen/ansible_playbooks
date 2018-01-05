@@ -1,0 +1,56 @@
+---
+- name: RHV VM deployment
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    - secrets.yml
+
+  vars:
+    engine_url: https://rhevm.chen.com/ovirt-engine/api
+    engine_user: admin@internal
+    engine_cafile: rhv_ca.pem
+    datacenter: Default
+    cluster: Default
+
+    standard_vm:
+      cluster: Default
+      template: rhel74-base
+      memory: 1GiB
+      cores: 2
+      disks:
+        - size: 50GiB
+          name: data
+          storage_domain: rhev_vms2
+          interface: virtio
+
+  pre_tasks:
+    - name: Login to rhv
+      ovirt_auth:
+        url: "{{ engine_url }}"
+        username: "{{ engine_user }}"
+        password: "{{ engine_password }}"
+        ca_file: "{{ engine_cafile | default(omit) }}"
+        insecure: "{{ engine_insecure | default(true) }}"
+      tags:
+        - always
+
+  #tasks:
+  #- name: deploying RHV VMs
+  #  ovirt:
+  #    instance_name: test_vm
+  #    instance_type: server
+  #    region: Default
+  #    instance_nic: nic1
+  #    instance_network: ovirtmgmt/ovirtmgmt
+  #    disk_alloc: thin
+  #    instance_os: Linux
+
+  post_tasks:
+    - name: Logout from rhv
+      ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"
+      tags:
+        - always
