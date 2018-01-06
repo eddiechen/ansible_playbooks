@@ -1,7 +1,8 @@
 ---
 engine_url: https://rhevm.chen.com/ovirt-engine/api
 engine_user: admin@internal
-engine_cafile: rhv_ca.pem
+engine_cafile: /etc/pki/ovirt-engine/rhv_ca.pem
 datacenter: Default
 cluster: Default
 vm_name: test
+engine_password: redhat

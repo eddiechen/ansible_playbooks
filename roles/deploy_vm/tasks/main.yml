@@ -1,19 +1,42 @@
 ---
-- name: pre_tasks
-  import_tasks: pre_tasks.yml
+- block:
+  - name: create /etc/pki/ovirt-engine directory
+    file:
+      path: /etc/pki/ovirt-engine
+      state: directory
+      mode: 0755
 
-- name: deploying a RHV VM
-  ovirt_vms:
-    auth: "{{ ovirt_auth }}   
-    name: "{{ vm_name }}"
-    template: rhel7u4_base
-    cluster: "{{ cluster }}"
-    cloud_init:
-      user_name: root
-      root_password: 'eddiechen'
-      custom_script: |
-        runcmd:
-        - /usr/bin/hostnamectl set-hostname {{ vm_name }}.chen.com
+  - name: copy rhv_ca.pem to /etc/pki/ovirt-engine/
+    file:
+      src: rhv_ca.pem
+      dest: /etc/pki/ovirt-engine
 
-- name: post_tasks
-  import_tasks: post_tasks.yml
+  - name: Login to rhv
+    ovirt_auth:
+      url: "{{ engine_url }}"
+      username: "{{ engine_user }}"
+      password: "{{ engine_password }}"
+      ca_file: "{{ engine_cafile | default(omit) }}"
+      insecure: "{{ engine_insecure | default(true) }}"
+    when: ovirt_auth is undefined
+    register: loggedin
+
+  - name: deploying a RHV VM
+    ovirt_vms:
+      auth: "{{ ovirt_auth }}" 
+      name: "{{ vm_name }}"
+      template: rhel7u4_base
+      cluster: "{{ cluster }}"
+      cloud_init:
+        user_name: root
+        root_password: 'eddiechen'
+        custom_script: |
+          runcmd:
+          - /usr/bin/hostnamectl set-hostname {{ vm_name }}.chen.com
+
+  always:
+    - name: Logout from rhv
+      ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"
+      when: not loggedin.skipped | default(false)
