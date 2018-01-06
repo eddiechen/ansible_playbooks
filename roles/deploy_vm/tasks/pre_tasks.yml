@@ -1,0 +1,11 @@
+---
+#pre_tasks
+- name: Login to rhv
+  ovirt_auth:
+    url: "{{ engine_url }}"
+    username: "{{ engine_user }}"
+    password: "{{ engine_password }}"
+    ca_file: "{{ engine_cafile | default(omit) }}"
+    insecure: "{{ engine_insecure | default(true) }}"
+  tags:
+    - always

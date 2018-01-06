@@ -1,0 +1,7 @@
+---
+- name: RHV VM deployment
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  roles:
+    - deploy_vm

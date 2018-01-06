@@ -1,2 +1,19 @@
 ---
-# tasks file for deploy_vm
+- name: pre_tasks
+  import_tasks: pre_tasks.yml
+
+- name: deploying a RHV VM
+  ovirt_vms:
+    auth: "{{ ovirt_auth }}   
+    name: "{{ vm_name }}"
+    template: rhel7u4_base
+    cluster: "{{ cluster }}"
+    cloud_init:
+      user_name: root
+      root_password: 'eddiechen'
+      custom_script: |
+        runcmd:
+        - /usr/bin/hostnamectl set-hostname {{ vm_name }}.chen.com
+
+- name: post_tasks
+  import_tasks: post_tasks.yml
