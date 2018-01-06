@@ -11,6 +11,10 @@
       src: rhv_ca.pem
       dest: /etc/pki/ovirt-engine
 
+  - name: load engine_password from secret vault file
+    include_vars: "secrets.yml"
+    no_log: true
+
   - name: Login to rhv
     ovirt_auth:
       url: "{{ engine_url }}"

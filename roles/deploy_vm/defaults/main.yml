@@ -4,5 +4,3 @@ engine_user: admin@internal
 engine_cafile: /etc/pki/ovirt-engine/rhv_ca.pem
 datacenter: Default
 cluster: Default
-vm_name: test
-engine_password: redhat
