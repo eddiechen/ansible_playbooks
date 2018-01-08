@@ -25,11 +25,11 @@
     when: ovirt_auth is undefined
     register: loggedin
 
-  - name: deploying a RHV VM
+  - name: deploying a RHV VM with static IP
     ovirt_vms:
       auth: "{{ ovirt_auth }}" 
       name: "{{ vm_name }}"
-      template: rhel7u4_base
+      template: "{{ img_name }}"
       cluster: "{{ cluster }}"
       cloud_init:
         user_name: root
@@ -37,6 +37,28 @@
         custom_script: |
           runcmd:
           - /usr/bin/hostnamectl set-hostname {{ vm_name }}.chen.com
+      cloud_init_nics:
+        - nic_name: eth0
+          nic_boot_protocol: static
+          nic_ip_address: 192.168.1.{{ ip_addr }}
+          nic_netmask: 255.255.255.0
+          nic_gateway: 192.168.1.1
+          nic_on_boot: true
+    when: ip_addr is defined
+
+  - name: deploying a RHV VM with dhcp IP
+    ovirt_vms:
+      auth: "{{ ovirt_auth }}"
+      name: "{{ vm_name }}"
+      template: "{{ img_name }}"
+      cluster: "{{ cluster }}"
+      cloud_init:
+        user_name: root
+        root_password: 'eddiechen'
+        custom_script: |
+          runcmd:
+          - /usr/bin/hostnamectl set-hostname {{ vm_name }}.chen.com
+    when: ip_addr is not defined
 
   always:
     - name: Logout from rhv
