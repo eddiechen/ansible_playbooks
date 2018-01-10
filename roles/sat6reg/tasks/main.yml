@@ -4,7 +4,7 @@
 - name: remove old content host name
   file:
     state: absent
-    path: /etc/rhsm/facts/katello.facts 
+    path: /etc/rhsm/facts/katello.facts
 
 - name: set sat6.chen.com ip in /etc/hosts
   lineinfile:
@@ -12,8 +12,10 @@
     line: "{{ sat6ip }} {{ fqdn }} {{ sat6server }}"
 
 - name: installing Sat6 certificate
-  command: /usr/bin/rpm -Uvh http://sat6.chen.com/pub/katello-ca-consumer-latest.noarch.rpm
-  ignore_errors: True
+  yum:
+    name: http://sat6.chen.com/pub/katello-ca-consumer-latest.noarch.rpm
+    state: present
+    ignore_errors: True
 
 - name: registering system w/ subscription manager
   redhat_subscription:
@@ -27,9 +29,11 @@
     state: latest
   with_items:
     - katello-agent
-#    - sysstat
+    - chrony
 #    - puppet
-#    - cockpit
+  notify: enable and start services
+- name: force all notified handlers to run at this point, not waiting for normal sync points
+  meta: flush_handlers
 
 #- name: set puppet config file
 #  lineinfile:
@@ -39,16 +43,6 @@
 #- name: run puppet config manually
 #  command: /usr/bin/puppet agent -t --onetime
 #  ignore_errors: True
-
-- name: enable katello-agent
-  service:
-    name: "{{ item }}"
-    state: started
-    enabled: yes
-  with_items:
-    - goferd
-#    - puppet
-#    - cockpit
 
 - name: disable firewall service
   service:
@@ -61,18 +55,13 @@
     dest: /etc/motd
     line: "you have been ansibled by Eddie!"
 
-- name: yum update all
-  yum:
-    name: "*"
-    state: latest
-
 - name: copy over satellite ssh key
   lineinfile:
     dest: /root/.ssh/authorized_keys
     line: "{{ ssh_key }}"
 
-- name: reboot host
-  shell: sleep 10 && /sbin/shutdown -r now
-  async: 300
-  poll: 0
-  become: true
+- name: yum update all
+  yum:
+    name: "*"
+    state: latest
+  notify: reboot server
