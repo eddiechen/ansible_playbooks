@@ -39,3 +39,4 @@
     - ntfs-3g
     - http://li.nux.ro/download/nux/dextop/el7/x86_64/exfat-utils-1.2.7-1.el7.nux.x86_64.rpm
     - http://li.nux.ro/download/nux/dextop/el7/x86_64/fuse-exfat-1.2.7-1.el7.nux.x86_64.rpm
+  ignore_errors: True

@@ -16,5 +16,5 @@
   yum:
     name: "*"
     disablerepo: "*"
-    enablerepo: base
+    enablerepo: rhel-7-server-rpms
     state: latest

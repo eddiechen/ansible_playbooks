@@ -5,11 +5,8 @@
     msg: "plexrpm variable is undefined"
   when: plexrpm is undefined
 
-- name: registering RHEL server
-  import_playbook: rhel_reg.yml
-
-- name: configurating system settings
-  import_playbook: sysconfig.yml
+- import_tasks: rhel_reg.yml
+- import_tasks: sysconfig.yml
 
 - name: installing plexmedia server rpm
   yum:
