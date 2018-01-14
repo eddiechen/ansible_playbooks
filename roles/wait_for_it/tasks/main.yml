@@ -1,7 +1,0 @@
----
-# tasks file for wait_for_it
-
-  - name: wait for system to become reachable
-    wait_for_connection:
-      timeout: 180
-      delay: 120

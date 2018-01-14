@@ -1,7 +1,0 @@
----
-#execute 'ansible-playbook sat6reg.yml -e "vm_name=<hostname>"'
-
-- hosts: "{{ vm_name }}{{ domain }}"
-  remote_user: root
-  roles:
-  - sat6reg
