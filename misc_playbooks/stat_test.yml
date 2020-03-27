@@ -1,0 +1,21 @@
+---
+- hosts: rhel7test1.eddiechen.net
+  remote_user: root
+
+  tasks:
+  - name: Copy file with owner and permissions
+    copy:
+      src: /root/test
+      dest: /root/test
+      owner: root
+      group: root
+      mode: '0644'
+
+  - name: test
+    stat:
+      path: /root/test
+    register: testfile
+
+  - debug:
+      msg: the file has been changed in the last 24 hours
+    when: ((ansible_date_time.epoch|int - testfile.stat.mtime) <= 86400)
